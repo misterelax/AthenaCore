@@ -35,12 +35,15 @@ import com.github.u3games.eventengine.events.handler.AbstractEvent;
 import com.github.u3games.eventengine.events.holders.NpcHolder;
 import com.github.u3games.eventengine.events.holders.PlayerHolder;
 import com.github.u3games.eventengine.events.holders.TeamHolder;
+import com.github.u3games.eventengine.interfaces.ParticipantHolder;
 import com.github.u3games.eventengine.util.EventUtil;
 import com.github.u3games.eventengine.util.SortUtils;
+import com.github.u3games.eventengine.util.helper.RewardHelper;
 import com.l2jserver.gameserver.datatables.ItemTable;
 import com.l2jserver.gameserver.enums.Team;
 import com.l2jserver.gameserver.model.Location;
 import com.l2jserver.gameserver.model.actor.L2Character;
+import com.l2jserver.gameserver.model.holders.ItemHolder;
 import com.l2jserver.gameserver.model.itemcontainer.Inventory;
 import com.l2jserver.gameserver.model.items.L2Item;
 import com.l2jserver.gameserver.model.items.L2Weapon;
@@ -299,24 +302,18 @@ public class CaptureTheFlag extends AbstractEvent
 		{
 			return;
 		}
-		
-		List<TeamHolder> teamWinners = SortUtils.getOrdered(getTeamsManager().getAllTeams(), ScoreType.POINT).get(0);
-		for (PlayerHolder ph : getPlayerEventManager().getAllEventPlayers())
+
+		RewardHelper helper = new RewardHelper();
+		helper.addTeams(getTeamsManager().getAllTeams());
+		helper.addReward(1, getConfig().getWinReward(), getConfig().getTieReward());
+		helper.addGeneralReward(getConfig().getParticipateReward());
+		helper.setOrderType(ScoreType.POINT);
+		helper.giveRewards();
+
+		for (ParticipantHolder participant : helper.getPositions().get(1))
 		{
-			TeamHolder phTeam = getTeamsManager().getPlayerTeam(ph);
-			// We deliver rewards
-			if (teamWinners.contains(phTeam))
-			{
-				// We deliver rewards
-				giveItems(ph, getConfig().getReward());
-			}
-		}
-		for (TeamHolder team : getTeamsManager().getAllTeams())
-		{
-			if (teamWinners.contains(team))
-			{
-				EventUtil.announceTo(Say2.BATTLEFIELD, "team_winner", "%holder%", team.getName(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
-			}
+			TeamHolder team = (TeamHolder) participant;
+			EventUtil.announceTo(Say2.BATTLEFIELD, "team_winner", "%holder%", team.getName(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
 		}
 	}
 	

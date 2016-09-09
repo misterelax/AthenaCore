@@ -15,7 +15,9 @@ public class CTFEventConfig implements EventConfig {
     private String instanceFile;
     private int flagNpcId;
     private int holderNpcId;
-    private List<EItemHolder> reward;
+    private List<EItemHolder> winReward;
+    private List<EItemHolder> tieReward;
+    private List<EItemHolder> participateReward;
     private boolean rewardKillEnabled;
     private List<EItemHolder> rewardKill;
     private boolean rewardPvPKillEnabled;
@@ -43,8 +45,16 @@ public class CTFEventConfig implements EventConfig {
         return holderNpcId;
     }
 
-    public List<ItemHolder> getReward() {
-        return ConvertUtils.convertToListItemsHolders(reward);
+    public List<ItemHolder> getWinReward() {
+        return ConvertUtils.convertToListItemsHolders(winReward);
+    }
+
+    public List<ItemHolder> getTieReward() {
+        return ConvertUtils.convertToListItemsHolders(tieReward);
+    }
+
+    public List<ItemHolder> getParticipateReward() {
+        return ConvertUtils.convertToListItemsHolders(participateReward);
     }
 
     public boolean isRewardKillEnabled() {

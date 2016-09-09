@@ -22,6 +22,9 @@ import com.github.u3games.eventengine.enums.TeamType;
 import com.github.u3games.eventengine.interfaces.ParticipantHolder;
 import com.l2jserver.gameserver.model.Location;
 import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jserver.gameserver.model.holders.ItemHolder;
+
+import java.util.Collection;
 
 /**
  * It manages player's info that participates in an event.
@@ -174,7 +177,15 @@ public class PlayerHolder implements ParticipantHolder
 	{
 		_player.setTitle(title);
 	}
-	
+
+	/**
+	 * Remove the team
+	 */
+	public void removeTeam()
+	{
+		_team = null;
+	}
+
 	/**
 	 * Recover the original player title.
 	 */
@@ -227,5 +238,13 @@ public class PlayerHolder implements ParticipantHolder
 	public void sendMessage(String message)
 	{
 		_player.sendMessage(message);
+	}
+
+	public void giveItems(Collection<ItemHolder> items)
+	{
+		for (ItemHolder item : items)
+		{
+			getPcInstance().addItem("eventReward", item.getId(), item.getCount(), null, true);
+		}
 	}
 }

@@ -18,11 +18,17 @@
  */
 package com.github.u3games.eventengine.interfaces;
 
+import com.l2jserver.gameserver.model.holders.ItemHolder;
+
+import java.util.Collection;
+
 public interface ParticipantHolder
 {
-	public int getKills();
+	int getKills();
 	
-	public int getPoints();
+	int getPoints();
 	
-	public int getDeaths();
+	int getDeaths();
+
+	void giveItems(Collection<ItemHolder> items);
 }

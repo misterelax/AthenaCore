@@ -12,7 +12,9 @@ public class TvTEventConfig implements EventConfig {
 
     private boolean enabled;
     private String instanceFile;
-    private List<EItemHolder> reward;
+    private List<EItemHolder> winReward;
+    private List<EItemHolder> tieReward;
+    private List<EItemHolder> participateReward;
     private boolean rewardKillEnabled;
     private List<EItemHolder> rewardKill;
     private boolean rewardPvPKillEnabled;
@@ -53,8 +55,16 @@ public class TvTEventConfig implements EventConfig {
         return rewardFameKill;
     }
 
-    public List<ItemHolder> getReward() {
-        return ConvertUtils.convertToListItemsHolders(reward);
+    public List<ItemHolder> getWinReward() {
+        return ConvertUtils.convertToListItemsHolders(winReward);
+    }
+
+    public List<ItemHolder> getTieReward() {
+        return ConvertUtils.convertToListItemsHolders(tieReward);
+    }
+
+    public List<ItemHolder> getParticipateReward() {
+        return ConvertUtils.convertToListItemsHolders(participateReward);
     }
 
     public List<TeamConfig> getTeams() {

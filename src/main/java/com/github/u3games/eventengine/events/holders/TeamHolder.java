@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.github.u3games.eventengine.enums.TeamType;
 import com.github.u3games.eventengine.interfaces.ParticipantHolder;
 import com.l2jserver.gameserver.model.Location;
+import com.l2jserver.gameserver.model.holders.ItemHolder;
 import com.l2jserver.util.Rnd;
 
 /**
@@ -34,6 +35,8 @@ public class TeamHolder implements ParticipantHolder
 	private String _teamName;
 	// Type of team
 	private final TeamType _teamType;
+	// Members
+	private final List<PlayerHolder> _members = new ArrayList<>();
 	// Amount of points
 	private final AtomicInteger _points = new AtomicInteger(0);
 	// Team Spawn
@@ -51,11 +54,6 @@ public class TeamHolder implements ParticipantHolder
 		setSpawns(spawns);
 	}
 
-	public TeamHolder(TeamType teamColor)
-	{
-		_teamType = teamColor;
-	}
-
 	public String getName()
 	{
 		return _teamName;
@@ -69,7 +67,27 @@ public class TeamHolder implements ParticipantHolder
 	{
 		return _teamType;
 	}
-	
+
+	public List<PlayerHolder> getMembers()
+	{
+		return _members;
+	}
+
+	public synchronized void addMember(PlayerHolder member)
+	{
+		_members.add(member);
+	}
+
+	public synchronized void removeMember(PlayerHolder member)
+	{
+		_members.remove(member);
+	}
+
+	public void clearMembers()
+	{
+		_members.clear();
+	}
+
 	/**
 	 * Define the spawn of a team.
 	 * @param loc
@@ -150,6 +168,15 @@ public class TeamHolder implements ParticipantHolder
 		if (_points.intValue() < 0)
 		{
 			_points.set(0);
+		}
+	}
+
+	@Override
+	public void giveItems(Collection<ItemHolder> items)
+	{
+		for (PlayerHolder ph : getMembers())
+		{
+			ph.giveItems(items);
 		}
 	}
 }

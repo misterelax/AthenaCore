@@ -807,6 +807,7 @@ public abstract class AbstractEvent implements IListenerSuscriber
 	 * <ul>
 	 * <b>Actions:</b>
 	 * </ul>
+	 * <li>Remove the team.</li>
 	 * <li>Recover original title.</li>
 	 * <li>Recover original color title.</li>
 	 * <li>Remove from instance and back 0</li>
@@ -815,6 +816,8 @@ public abstract class AbstractEvent implements IListenerSuscriber
 	 */
 	public void removePlayerFromEvent(PlayerHolder ph, boolean forceRemove)
 	{
+		ph.getTeam().removeMember(ph);
+		ph.removeTeam();
 		// Recovers player's title and color
 		ph.recoverOriginalColorTitle();
 		ph.recoverOriginalTitle();
